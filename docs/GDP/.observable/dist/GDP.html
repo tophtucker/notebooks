@@ -1,0 +1,1562 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style type="text/css">/* Copyright 2025 Observable, Inc. */
+
+:root {
+  --serif:
+    "Source Serif 4", "Iowan Old Style", "Apple Garamond", "Palatino Linotype", "Times New Roman",
+    "Droid Serif", Times, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --sans-serif:
+    "Inter", -apple-system, BlinkMacSystemFont, "avenir next", avenir, helvetica, "helvetica neue",
+    ubuntu, roboto, noto, "segoe ui", arial, sans-serif;
+  --monospace: "Spline Sans Mono", Menlo, Consolas, monospace;
+  --monospace-font: 14px/1.5 var(--monospace);
+  --max-width: calc(1024px - 4 * 16px); /* max-w-5xl p-4 */
+}
+
+html {
+  font: 17px/1.5 var(--serif);
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--theme-background);
+  color: var(--theme-foreground);
+  margin-top: 16px;
+  padding: 16px 24px;
+}
+
+body {
+  margin: auto;
+  max-width: var(--max-width);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--theme-foreground-alt);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-top: 0;
+  margin-bottom: 0.25rem;
+  text-wrap: balance;
+}
+
+h2 + p,
+h3 + p,
+h4 + p,
+h2 + table,
+h3 + table,
+h4 + table {
+  margin-top: 0;
+}
+
+.observablehq:first-of-type h1 + h2 {
+  color: var(--theme-foreground);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 1rem; /* see h2 ~ p */
+}
+
+a[href] {
+  color: var(--theme-foreground-focus);
+  text-decoration: none;
+}
+
+a[href]:hover,
+a[href]:focus {
+  text-decoration: underline;
+}
+
+pre,
+code,
+tt {
+  font-family: var(--monospace);
+  font-size: 82.35294117%; /* from 17px to 14px */
+}
+
+pre code,
+figcaption code {
+  font-size: inherit;
+}
+
+pre[data-language] {
+  position: relative;
+}
+
+pre[data-language]::before {
+  content: attr(data-language);
+  float: right;
+  margin: -4px -8px -4px -4px;
+  padding: 4px;
+  font-size: 12px;
+  line-height: 21px;
+  color: var(--theme-foreground-muted);
+}
+
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code {
+  font-size: 88.235294117%; /* from 17px to 15px */
+}
+
+h2[id] a[href],
+h3[id] a[href] {
+  color: inherit;
+}
+
+pre {
+  line-height: 1.5;
+}
+
+img {
+  max-width: 100%;
+}
+
+p,
+table,
+figure,
+figcaption,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.katex-display {
+  max-width: 640px;
+}
+
+blockquote,
+ol,
+ul {
+  max-width: 600px;
+}
+
+blockquote {
+  margin: 1rem 1.5rem;
+}
+
+ul,
+ol {
+  padding-left: 28px;
+}
+
+hr {
+  height: 1px;
+  margin: 1rem 0;
+  padding: 1rem 0;
+  border: none;
+  background: no-repeat center/100% 1px
+    linear-gradient(to right, var(--theme-foreground-faintest), var(--theme-foreground-faintest));
+}
+
+pre {
+  background-color: var(--theme-background-alt);
+  border-radius: 4px;
+  margin: 1rem -1rem;
+  /* max-width: 960px; */
+  min-height: 1.5em;
+  padding: 4px 1rem;
+  overflow-x: auto;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+}
+
+input:not([type]),
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="range"],
+input[type="search"],
+input[type="tel"],
+input[type="text"],
+input[type="url"] {
+  width: 240px;
+}
+
+input,
+canvas,
+button {
+  vertical-align: middle;
+}
+
+button,
+input,
+textarea {
+  accent-color: var(--theme-foreground-focus);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font: 13px/1.2 var(--sans-serif);
+}
+
+table pre,
+table code,
+table tt {
+  font-size: inherit;
+  line-height: inherit;
+}
+
+th > pre:only-child,
+td > pre:only-child {
+  margin: 0;
+  padding: 0;
+}
+
+th {
+  color: var(--theme-foreground);
+  text-align: left;
+  vertical-align: bottom;
+}
+
+td {
+  color: var(--theme-foreground-alt);
+  vertical-align: top;
+}
+
+th,
+td {
+  padding: 3px 6.5px 3px 0;
+}
+
+th:last-child,
+td:last-child {
+  padding-right: 0;
+}
+
+tr:not(:last-child) {
+  border-bottom: solid 1px var(--theme-foreground-faintest);
+}
+
+thead tr {
+  border-bottom: solid 1px var(--theme-foreground-fainter);
+}
+
+figure,
+table {
+  margin: 1rem 0;
+}
+
+figure img {
+  max-width: 100%;
+}
+
+figure > h2,
+figure > h3 {
+  font-family: var(--sans-serif);
+}
+
+figure > h2 {
+  font-size: 20px;
+}
+
+figure > h3 {
+  font-size: 16px;
+  font-weight: normal;
+}
+
+figcaption {
+  font: small var(--sans-serif);
+  color: var(--theme-foreground-muted);
+}
+
+.observablehq--collapsed,
+.observablehq--expanded.observablehq--inspect a {
+  cursor: pointer;
+}
+
+.observablehq--caret {
+  margin-right: 4px;
+  vertical-align: baseline;
+}
+
+.observablehq--field {
+  text-indent: -1rem;
+  margin-left: 1rem;
+}
+
+.observablehq--inspect {
+  font: var(--monospace-font);
+  overflow-x: auto;
+  white-space: pre;
+  display: block;
+  padding: 2px 0;
+}
+
+.observablehq--inspect.observablehq--import {
+  white-space: normal;
+}
+
+.observablehq--inspect::-webkit-scrollbar {
+  display: none;
+}
+
+.observablehq--error .observablehq--inspect {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.observablehq--string-expand {
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 80%;
+  background: var(--theme-background-alt);
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.observablehq--keyword {
+  color: var(--syntax-keyword);
+}
+
+.observablehq--index,
+.observablehq--key {
+  color: var(--syntax-definition);
+}
+
+.observablehq--symbol,
+.observablehq--regexp,
+.observablehq--string {
+  color: var(--syntax-string);
+}
+
+.observablehq--null {
+  color: var(--syntax-keyword);
+}
+
+.observablehq--undefined {
+  color: var(--syntax-variable);
+}
+
+.observablehq--prototype-key {
+  color: var(--syntax-comment);
+}
+
+.observablehq--bigint,
+.observablehq--boolean,
+.observablehq--date,
+.observablehq--forbidden,
+.observablehq--number {
+  color: var(--syntax-literal);
+}
+
+.observablehq--error {
+  color: var(--theme-error);
+}
+
+.observablehq--cell {
+  margin: 17px 0;
+  min-height: 1px; /* prevent margin collapse when empty */
+}
+
+.tok-link {
+  color: var(--syntax-link);
+}
+
+.tok-strong {
+  font-weight: 600;
+}
+
+.tok-emphasis {
+  font-style: italic;
+}
+
+.tok-keyword {
+  color: var(--syntax-keyword);
+}
+
+.tok-atom {
+  color: var(--syntax-atom);
+}
+
+.tok-literal {
+  color: var(--syntax-literal);
+}
+
+.tok-string {
+  color: var(--syntax-string);
+}
+
+.tok-comment {
+  color: var(--syntax-comment);
+}
+
+.tok-invalid {
+  color: var(--syntax-invalid);
+}
+
+.tok-variable {
+  color: var(--syntax-variable);
+}
+
+.tok-definition {
+  color: var(--syntax-definition);
+}
+
+.tok-meta {
+  color: var(--syntax-meta);
+}
+
+.plot-d6a7b5 {
+  --plot-background: var(--theme-background);
+}
+
+p .plot-d6a7b5 {
+  display: inline-block;
+}
+
+.observablehq--cell:empty {
+  min-height: 0;
+}
+
+.observablehq--cell:not(:empty) + pre {
+  margin-top: -11px;
+}
+
+/* spline-sans-mono-latin-ext-400-normal */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/spline-sans-mono-latin-ext-400-normal-BfWvPoNT.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-ext-400-normal-BkT5i7fe.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* spline-sans-mono-latin-400-normal */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/spline-sans-mono-latin-400-normal-mUpA6Mve.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-400-normal-739QRW1l.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* spline-sans-mono-latin-ext-600-normal */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/spline-sans-mono-latin-ext-600-normal-CYO0557q.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-ext-600-normal-es3wdE0V.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* spline-sans-mono-latin-600-normal */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/spline-sans-mono-latin-600-normal-BrWm9FVc.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-600-normal-ZCqv2Jod.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* spline-sans-mono-latin-ext-700-normal */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/spline-sans-mono-latin-ext-700-normal-CIwA9V33.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-ext-700-normal-OD-FaHeD.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* spline-sans-mono-latin-700-normal */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/spline-sans-mono-latin-700-normal-BwW4xXNM.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-700-normal-BLdnetBw.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* spline-sans-mono-latin-ext-400-italic */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/spline-sans-mono-latin-ext-400-italic-Bgx7hsPO.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-ext-400-italic-ByCpokw0.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* spline-sans-mono-latin-400-italic */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/spline-sans-mono-latin-400-italic-DP081DET.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-400-italic-Z_tpZbsx.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* spline-sans-mono-latin-ext-600-italic */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/spline-sans-mono-latin-ext-600-italic-CJ3g_dA0.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-ext-600-italic-QnP7nD6P.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* spline-sans-mono-latin-600-italic */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/spline-sans-mono-latin-600-italic-DUvxu3FQ.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-600-italic-B7XC_fUc.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* spline-sans-mono-latin-ext-700-italic */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/spline-sans-mono-latin-ext-700-italic-DIdep8Er.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-ext-700-italic-CIqQYA0i.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* spline-sans-mono-latin-700-italic */
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/spline-sans-mono-latin-700-italic-shtgotnr.woff2) format('woff2'), url(./assets/spline-sans-mono-latin-700-italic-6zMndKap.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* source-serif-4-cyrillic-ext-400-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-cyrillic-ext-400-normal-CWV284fw.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-ext-400-normal-DLkyKLvH.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* source-serif-4-cyrillic-400-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-cyrillic-400-normal-C44pakCn.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-400-normal-B8Z6Jvzv.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* source-serif-4-greek-400-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-greek-400-normal-Cw5-AHNN.woff2) format('woff2'), url(./assets/source-serif-4-greek-400-normal-BccYJ-vZ.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* source-serif-4-vietnamese-400-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-vietnamese-400-normal-BbG3LG1A.woff2) format('woff2'), url(./assets/source-serif-4-vietnamese-400-normal-DR1UuFon.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* source-serif-4-latin-ext-400-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-latin-ext-400-normal-Cp7z-ARB.woff2) format('woff2'), url(./assets/source-serif-4-latin-ext-400-normal-CEpydyUl.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* source-serif-4-latin-400-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-latin-400-normal-DJ5YJwmz.woff2) format('woff2'), url(./assets/source-serif-4-latin-400-normal-Dn3IlU-Z.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* source-serif-4-cyrillic-ext-700-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-cyrillic-ext-700-normal-B9R79AaY.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-ext-700-normal-DsKdgJCr.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* source-serif-4-cyrillic-700-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-cyrillic-700-normal-BmBwwUw2.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-700-normal-DVvE-KHB.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* source-serif-4-greek-700-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-greek-700-normal-BzuEQSqJ.woff2) format('woff2'), url(./assets/source-serif-4-greek-700-normal-C5Ojiwey.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* source-serif-4-vietnamese-700-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-vietnamese-700-normal-CCAt8c4x.woff2) format('woff2'), url(./assets/source-serif-4-vietnamese-700-normal-BBU5i_d1.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* source-serif-4-latin-ext-700-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-latin-ext-700-normal-C8ywwcuQ.woff2) format('woff2'), url(./assets/source-serif-4-latin-ext-700-normal-BZsvHpal.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* source-serif-4-latin-700-normal */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-latin-700-normal-CGGdTIBe.woff2) format('woff2'), url(./assets/source-serif-4-latin-700-normal-3V4Pv1hj.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* source-serif-4-cyrillic-ext-400-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-cyrillic-ext-400-italic-zoDFlEzN.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-ext-400-italic-Dx4A8QUO.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* source-serif-4-cyrillic-400-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-cyrillic-400-italic-BLN19cOa.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-400-italic-Dx8qIUN3.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* source-serif-4-greek-400-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-greek-400-italic-C7D4Dq0H.woff2) format('woff2'), url(./assets/source-serif-4-greek-400-italic-DcuniPAV.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* source-serif-4-vietnamese-400-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-vietnamese-400-italic-CjUPRDIa.woff2) format('woff2'), url(./assets/source-serif-4-vietnamese-400-italic-DyjhI2GX.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* source-serif-4-latin-ext-400-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-latin-ext-400-italic-JynPwBMj.woff2) format('woff2'), url(./assets/source-serif-4-latin-ext-400-italic-G7LDTi7t.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* source-serif-4-latin-400-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/source-serif-4-latin-400-italic-0j97Jm6B.woff2) format('woff2'), url(./assets/source-serif-4-latin-400-italic-Dv9jnFA_.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* source-serif-4-cyrillic-ext-700-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-cyrillic-ext-700-italic-BdFI3uD2.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-ext-700-italic-CW6u860k.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* source-serif-4-cyrillic-700-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-cyrillic-700-italic-C5vSpb1a.woff2) format('woff2'), url(./assets/source-serif-4-cyrillic-700-italic-BNXt_5iO.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* source-serif-4-greek-700-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-greek-700-italic-DbF55r_P.woff2) format('woff2'), url(./assets/source-serif-4-greek-700-italic-bfz8xsri.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* source-serif-4-vietnamese-700-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-vietnamese-700-italic-CqUud9yW.woff2) format('woff2'), url(./assets/source-serif-4-vietnamese-700-italic-CmYmx5Sm.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* source-serif-4-latin-ext-700-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-latin-ext-700-italic-D3ZlY63u.woff2) format('woff2'), url(./assets/source-serif-4-latin-ext-700-italic-DppnFcZR.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* source-serif-4-latin-700-italic */
+
+@font-face {
+  font-family: 'Source Serif 4';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/source-serif-4-latin-700-italic-JqVfbRzb.woff2) format('woff2'), url(./assets/source-serif-4-latin-700-italic-BU_ZoKoz.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-cyrillic-ext-400-normal-Dc4VJyIJ.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-400-normal-BE2fNs0E.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-cyrillic-400-normal-BLGc9T1a.woff2) format('woff2'), url(./assets/inter-cyrillic-400-normal-alAqRL36.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-greek-ext-400-normal-Bput3-QP.woff2) format('woff2'), url(./assets/inter-greek-ext-400-normal-XIH6-K3k.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-greek-400-normal-DxZsaF_h.woff2) format('woff2'), url(./assets/inter-greek-400-normal-C3I71FoW.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-vietnamese-400-normal-DMkecbls.woff2) format('woff2'), url(./assets/inter-vietnamese-400-normal-Bbgyi5SW.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-latin-ext-400-normal-C1nco2VV.woff2) format('woff2'), url(./assets/inter-latin-ext-400-normal-77YHD8bZ.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-400-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-latin-400-normal-C38fXH4l.woff2) format('woff2'), url(./assets/inter-latin-400-normal-CyCys3Eg.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-cyrillic-ext-500-normal-BShVwWPj.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-500-normal-NrhEyngK.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-cyrillic-500-normal-D4Vwzodn.woff2) format('woff2'), url(./assets/inter-cyrillic-500-normal-BoeW9iIj.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-greek-ext-500-normal-B6guLgqG.woff2) format('woff2'), url(./assets/inter-greek-ext-500-normal-1SJLBQ3N.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-greek-500-normal-CeQXL5ds.woff2) format('woff2'), url(./assets/inter-greek-500-normal-CSBZZ4CI.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-vietnamese-500-normal-DOriooB6.woff2) format('woff2'), url(./assets/inter-vietnamese-500-normal-mJboJaSs.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-latin-ext-500-normal-CV4jyFjo.woff2) format('woff2'), url(./assets/inter-latin-ext-500-normal-BxGbmqWO.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-500-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-latin-500-normal-Cerq10X2.woff2) format('woff2'), url(./assets/inter-latin-500-normal-BL9OpVg8.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-cyrillic-ext-600-normal-CaqZN2hq.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-600-normal-t7rHAwBu.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-cyrillic-600-normal-BGBWG807.woff2) format('woff2'), url(./assets/inter-cyrillic-600-normal-vZ-N8GHY.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-greek-ext-600-normal-Cnui8OiR.woff2) format('woff2'), url(./assets/inter-greek-ext-600-normal-CCFnzSpK.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-greek-600-normal-Dhlb-90d.woff2) format('woff2'), url(./assets/inter-greek-600-normal-BVGIV3oK.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-vietnamese-600-normal-Cc8MFFhd.woff2) format('woff2'), url(./assets/inter-vietnamese-600-normal-BuLX-rYi.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-latin-ext-600-normal-D2bJ5OIk.woff2) format('woff2'), url(./assets/inter-latin-ext-600-normal-CIVaiw4L.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-600-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-latin-600-normal-LgqL8muc.woff2) format('woff2'), url(./assets/inter-latin-600-normal-CiBQ2DWP.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-cyrillic-ext-700-normal-ClVoMEGq.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-700-normal-Cg0zx2i8.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-cyrillic-700-normal-bGtGjVdZ.woff2) format('woff2'), url(./assets/inter-cyrillic-700-normal-oWiwobpV.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-greek-ext-700-normal-SzCdnevJ.woff2) format('woff2'), url(./assets/inter-greek-ext-700-normal-D0KHSs-V.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-greek-700-normal-Cxpycf-U.woff2) format('woff2'), url(./assets/inter-greek-700-normal-DtGkhywV.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-vietnamese-700-normal-CGpBpxLq.woff2) format('woff2'), url(./assets/inter-vietnamese-700-normal-DL6eWghQ.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-latin-ext-700-normal-CfWAu3Qq.woff2) format('woff2'), url(./assets/inter-latin-ext-700-normal-Z3s-4e5M.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-700-normal */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-latin-700-normal-Drs_5D37.woff2) format('woff2'), url(./assets/inter-latin-700-normal-KTwiWvO9.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-cyrillic-ext-400-italic-CehB8t-8.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-400-italic-nTurEaSu.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-cyrillic-400-italic-CKyytblM.woff2) format('woff2'), url(./assets/inter-cyrillic-400-italic-vANaBym1.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-greek-ext-400-italic-MxoIabFE.woff2) format('woff2'), url(./assets/inter-greek-ext-400-italic-fwfMSvUC.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-greek-400-italic-C_qJDahm.woff2) format('woff2'), url(./assets/inter-greek-400-italic-CJ86Nr4G.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-vietnamese-400-italic-Ceaj4WUo.woff2) format('woff2'), url(./assets/inter-vietnamese-400-italic-E-DnQMHp.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-latin-ext-400-italic-CGFCRmTM.woff2) format('woff2'), url(./assets/inter-latin-ext-400-italic-DpQ6ZOoA.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-400-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400;
+  src: url(./assets/inter-latin-400-italic-D1l0FflY.woff2) format('woff2'), url(./assets/inter-latin-400-italic-BmFrN47l.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-cyrillic-ext-500-italic-Bx8SeCYt.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-500-italic-9Xx2Q3PI.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-cyrillic-500-italic-4speQOfI.woff2) format('woff2'), url(./assets/inter-cyrillic-500-italic-BOni0Cyk.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-greek-ext-500-italic-B6pJyy6Z.woff2) format('woff2'), url(./assets/inter-greek-ext-500-italic-Bccyr9Gt.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-greek-500-italic-DZ4GW5_M.woff2) format('woff2'), url(./assets/inter-greek-500-italic-CGefo6TM.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-vietnamese-500-italic-Ci6hLotD.woff2) format('woff2'), url(./assets/inter-vietnamese-500-italic-BDm3lIJY.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-latin-ext-500-italic-6uvZyJeQ.woff2) format('woff2'), url(./assets/inter-latin-ext-500-italic-O82l3e5v.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-500-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 500;
+  src: url(./assets/inter-latin-500-italic-CmxAJXy_.woff2) format('woff2'), url(./assets/inter-latin-500-italic-BaBk7Nya.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-cyrillic-ext-600-italic-DIv3VbJ3.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-600-italic-BIHeN5NP.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-cyrillic-600-italic-DlcfoU7n.woff2) format('woff2'), url(./assets/inter-cyrillic-600-italic-B9biYJZN.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-greek-ext-600-italic-BehS7mmu.woff2) format('woff2'), url(./assets/inter-greek-ext-600-italic-B7VSimn1.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-greek-600-italic-Bl6euVqm.woff2) format('woff2'), url(./assets/inter-greek-600-italic-BghegE-E.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-vietnamese-600-italic-BuG6-S9s.woff2) format('woff2'), url(./assets/inter-vietnamese-600-italic-CKjJHBAp.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-latin-ext-600-italic-4pxPPAsx.woff2) format('woff2'), url(./assets/inter-latin-ext-600-italic-DgI6rDWk.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-600-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 600;
+  src: url(./assets/inter-latin-600-italic-BJYrns_i.woff2) format('woff2'), url(./assets/inter-latin-600-italic-CIYS91tl.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* inter-cyrillic-ext-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-cyrillic-ext-700-italic-zNftX4Ap.woff2) format('woff2'), url(./assets/inter-cyrillic-ext-700-italic-ovu678TW.woff) format('woff');
+  unicode-range: U+0460-052F,U+1C80-1C8A,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;
+}
+
+/* inter-cyrillic-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-cyrillic-700-italic-hrd_O5x6.woff2) format('woff2'), url(./assets/inter-cyrillic-700-italic-CYn0WAO5.woff) format('woff');
+  unicode-range: U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
+}
+
+/* inter-greek-ext-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-greek-ext-700-italic-CVhTt7Au.woff2) format('woff2'), url(./assets/inter-greek-ext-700-italic-lj1OV0dH.woff) format('woff');
+  unicode-range: U+1F00-1FFF;
+}
+
+/* inter-greek-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-greek-700-italic-8_7f-yBK.woff2) format('woff2'), url(./assets/inter-greek-700-italic-WAr0TkHx.woff) format('woff');
+  unicode-range: U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF;
+}
+
+/* inter-vietnamese-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-vietnamese-700-italic-DeYDD1t8.woff2) format('woff2'), url(./assets/inter-vietnamese-700-italic-DlTkVA-t.woff) format('woff');
+  unicode-range: U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB;
+}
+
+/* inter-latin-ext-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-latin-ext-700-italic-BouXvm2p.woff2) format('woff2'), url(./assets/inter-latin-ext-700-italic-BnVTCIQ6.woff) format('woff');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* inter-latin-700-italic */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 700;
+  src: url(./assets/inter-latin-700-italic-B-R1LdaJ.woff2) format('woff2'), url(./assets/inter-latin-700-italic-u1DKaYGd.woff) format('woff');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+    </style>
+  <meta name="generator" content="Observable Notebook Kit v1.0.1" /><title>Massachusetts vs. U.S. GDP over time</title>  <script type="module" crossorigin src="./assets/GDP-CGngbVYU.js"></script>
+</head>
+  <body>
+    <main><div id="cell-1" class="observablehq observablehq--cell"><div><h1>Massachusetts vs. U.S. GDP over time</h1>
+<p>I said the same thing to Claude (Sonnet 4) and ChatGPT (5 Thinking): “make a chart of Massachusetts’s share of U.S. GDP over time”.</p>
+<p>They both searched the web. Then Claude created an artifact with an interactive Chart.js line chart, and ChatGPT ran some Python to generate a static image. They both looked like they had completed the task, but their answers disagreed:</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center;"><a href="https://claude.ai/share/6c4602d1-3aad-4e67-9a49-72b23774acb6">Claude</a></th>
+      <th style="text-align: center;"><a href="https://chatgpt.com/share/689e7d77-f8dc-800b-8c9d-7f0b03587306">ChatGPT</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="" /></td>
+      <td><img src="" /></td>
+    </tr>
+  </tbody>
+</table>
+<p>In their searching, we can see that they both landed on the same two FRED series: <a href="https://fred.stlouisfed.org/series/GDP">Gross Domestic Product (GDP)</a> and <a href="https://fred.stlouisfed.org/series/MANGSP">Gross Domestic Product: All Industry Total in Massachusetts (MANGSP)</a>. “I can manually copy the values for 1997-2024 from both tables,” said ChatGPT; “It’s a bit tedious but manageable with 28 rows.” They both hardcoded the “manually” transcribed data into their code.</p>
+<p>Claude’s data was:</p>
+</div></div><div id="cell-2" class="observablehq observablehq--cell"></div><pre data-language="js"><code class="language-js"><span class="tok-comment">// Massachusetts GDP and U.S. GDP data (in billions/trillions)</span>
+<span class="tok-keyword">const</span> <span class="tok-definition">claude</span> = {
+  <span class="tok-definition">years</span>: [<span class="tok-literal">1997</span>, <span class="tok-literal">1998</span>, <span class="tok-literal">1999</span>, <span class="tok-literal">2000</span>, <span class="tok-literal">2001</span>, <span class="tok-literal">2002</span>, <span class="tok-literal">2003</span>, <span class="tok-literal">2004</span>, <span class="tok-literal">2005</span>, <span class="tok-literal">2006</span>, <span class="tok-literal">2007</span>, <span class="tok-literal">2008</span>, <span class="tok-literal">2009</span>, <span class="tok-literal">2010</span>, <span class="tok-literal">2011</span>, <span class="tok-literal">2012</span>, <span class="tok-literal">2013</span>, <span class="tok-literal">2014</span>, <span class="tok-literal">2015</span>, <span class="tok-literal">2016</span>, <span class="tok-literal">2017</span>, <span class="tok-literal">2018</span>, <span class="tok-literal">2019</span>, <span class="tok-literal">2020</span>, <span class="tok-literal">2021</span>, <span class="tok-literal">2022</span>, <span class="tok-literal">2023</span>, <span class="tok-literal">2024</span>],
+  <span class="tok-definition">maGDP</span>: [<span class="tok-literal">274.2</span>, <span class="tok-literal">292.8</span>, <span class="tok-literal">310.5</span>, <span class="tok-literal">334.7</span>, <span class="tok-literal">348.2</span>, <span class="tok-literal">356.4</span>, <span class="tok-literal">367.8</span>, <span class="tok-literal">388.2</span>, <span class="tok-literal">408.9</span>, <span class="tok-literal">427.3</span>, <span class="tok-literal">441.8</span>, <span class="tok-literal">450.2</span>, <span class="tok-literal">435.8</span>, <span class="tok-literal">457.2</span>, <span class="tok-literal">474.6</span>, <span class="tok-literal">493.8</span>, <span class="tok-literal">507.9</span>, <span class="tok-literal">526.4</span>, <span class="tok-literal">545.8</span>, <span class="tok-literal">559.2</span>, <span class="tok-literal">578.3</span>, <span class="tok-literal">603.2</span>, <span class="tok-literal">625.8</span>, <span class="tok-literal">592.7</span>, <span class="tok-literal">649.5</span>, <span class="tok-literal">695.6</span>, <span class="tok-literal">736.3</span>, <span class="tok-literal">780.7</span>],
+  <span class="tok-definition">usGDP</span>: [<span class="tok-literal">8608.5</span>, <span class="tok-literal">9089.2</span>, <span class="tok-literal">9660.6</span>, <span class="tok-literal">10252.3</span>, <span class="tok-literal">10581.8</span>, <span class="tok-literal">10929.1</span>, <span class="tok-literal">11458.2</span>, <span class="tok-literal">12213.7</span>, <span class="tok-literal">13036.6</span>, <span class="tok-literal">13815.6</span>, <span class="tok-literal">14477.6</span>, <span class="tok-literal">14718.6</span>, <span class="tok-literal">14418.7</span>, <span class="tok-literal">14992.1</span>, <span class="tok-literal">15542.6</span>, <span class="tok-literal">16197.0</span>, <span class="tok-literal">16784.8</span>, <span class="tok-literal">17527.3</span>, <span class="tok-literal">18120.7</span>, <span class="tok-literal">18624.5</span>, <span class="tok-literal">19485.4</span>, <span class="tok-literal">20533.1</span>, <span class="tok-literal">21372.6</span>, <span class="tok-literal">20953.0</span>, <span class="tok-literal">23315.1</span>, <span class="tok-literal">25462.7</span>, <span class="tok-literal">27361.0</span>, <span class="tok-literal">29184.9</span>]
+};
+<span class="tok-variable">display</span>(<span class="tok-variable">claude</span>);</code></pre><div id="cell-4" class="observablehq observablehq--cell"><div><p>ChatGPT’s, translated from Python, was:</p>
+</div></div><div id="cell-5" class="observablehq observablehq--cell"></div><pre data-language="js"><code class="language-js"><span class="tok-keyword">const</span> <span class="tok-definition">chatgpt</span> = {
+  <span class="tok-definition">years</span>: <span class="tok-variable">d3</span>.<span class="tok-definition">range</span>(<span class="tok-literal">1997</span>, <span class="tok-literal">2025</span>),
+  <span class="tok-comment">// Massachusetts current-dollar GDP, Millions of Dollars (MANGSP)</span>
+  <span class="tok-definition">ma_gdp_millions</span>: [
+    <span class="tok-literal">236435.6</span>, <span class="tok-literal">247686.8</span>, <span class="tok-literal">262868.8</span>, <span class="tok-literal">287091.4</span>, <span class="tok-literal">294876.4</span>, <span class="tok-literal">299915.8</span>, <span class="tok-literal">309736.1</span>, <span class="tok-literal">324919.0</span>,
+    <span class="tok-literal">340637.8</span>, <span class="tok-literal">358418.3</span>, <span class="tok-literal">377985.6</span>, <span class="tok-literal">387923.4</span>, <span class="tok-literal">388963.9</span>, <span class="tok-literal">409270.0</span>, <span class="tok-literal">423684.9</span>, <span class="tok-literal">441373.9</span>,
+    <span class="tok-literal">452580.4</span>, <span class="tok-literal">469824.9</span>, <span class="tok-literal">497767.0</span>, <span class="tok-literal">514108.0</span>, <span class="tok-literal">530129.4</span>, <span class="tok-literal">559605.0</span>, <span class="tok-literal">588069.5</span>, <span class="tok-literal">592653.0</span>,
+    <span class="tok-literal">649511.4</span>, <span class="tok-literal">695612.1</span>, <span class="tok-literal">736296.3</span>, <span class="tok-literal">780666.2</span>
+  ],
+  <span class="tok-comment">// U.S. current-dollar GDP, Billions of Dollars (GDPA)</span>
+  <span class="tok-definition">us_gdp_billions</span>: [
+    <span class="tok-literal">8577.552</span>, <span class="tok-literal">9062.817</span>, <span class="tok-literal">9631.172</span>, <span class="tok-literal">10250.952</span>, <span class="tok-literal">10581.929</span>, <span class="tok-literal">10929.108</span>, <span class="tok-literal">11456.450</span>, <span class="tok-literal">12217.196</span>,
+    <span class="tok-literal">13039.197</span>, <span class="tok-literal">13815.583</span>, <span class="tok-literal">14474.228</span>, <span class="tok-literal">14769.862</span>, <span class="tok-literal">14478.067</span>, <span class="tok-literal">15048.971</span>, <span class="tok-literal">15599.732</span>, <span class="tok-literal">16253.970</span>,
+    <span class="tok-literal">16880.683</span>, <span class="tok-literal">17608.138</span>, <span class="tok-literal">18295.019</span>, <span class="tok-literal">18804.913</span>, <span class="tok-literal">19612.102</span>, <span class="tok-literal">20656.516</span>, <span class="tok-literal">21539.982</span>, <span class="tok-literal">21354.105</span>,
+    <span class="tok-literal">23681.171</span>, <span class="tok-literal">26006.893</span>, <span class="tok-literal">27720.709</span>, <span class="tok-literal">29184.890</span>
+  ]
+};
+<span class="tok-variable">display</span>(<span class="tok-variable">chatgpt</span>);</code></pre><div id="cell-7" class="observablehq observablehq--cell"><div><p>Claude’s comment above claims its numbers are in “billions/trillions”, but in fact I think they’re all billions, which suggests it may have convered the Massachusetts FRED series “in its head”, on the fly, during transcription. ChatGPT, as its comments indicate, has left Massachusetts in millions, like in the original FRED series.</p>
+<p>I’ll convert all figures to billions, so they’re comparable, and pull in the real data from CSVs downloaded from FRED.</p>
+</div></div><div id="cell-10" class="observablehq observablehq--cell"></div><div id="cell-20" class="observablehq observablehq--cell"><div><p>Now we can compare the different sources of MANGSP:</p>
+</div></div><div id="cell-12" class="observablehq observablehq--cell"></div><div id="cell-19" class="observablehq observablehq--cell"></div><div id="cell-21" class="observablehq observablehq--cell"><div><p>ChatGPT transcribed it perfectly. Claude overestimated it until 2020, when it became spot-on. As for GDP:</p>
+</div></div><div id="cell-13" class="observablehq observablehq--cell"></div><div id="cell-15" class="observablehq observablehq--cell"></div><div id="cell-22" class="observablehq observablehq--cell"><div><p>Both Claude and ChatGPT exhibited distinct but highly correlated errors that make me wonder if they were looking at some other source…</p>
+<p>A-ha! Re-reading more carefully, it seems that after ChatGPT looked at GDP, it actually ended up using the <a href="https://fred.stlouisfed.org/series/GDPA">GDPA</a> series, which omits seasonal adjustment!</p>
+</div></div><div id="cell-39" class="observablehq observablehq--cell"></div><div id="cell-37" class="observablehq observablehq--cell"></div><div id="cell-38" class="observablehq observablehq--cell"></div><div id="cell-40" class="observablehq observablehq--cell"><div><p>Now ChatGPT is spot on. Claude, in contrast, never claimed to be using GDPA, though its correlated errors above suggest it might’ve somehow been looking at it anyway. Using GDPA, its initial error is reduced, but later error increases.</p>
+</div></div><div id="cell-35" class="observablehq observablehq--cell"><div><p>Now we can remake the ratio chart.</p>
+</div></div><div id="cell-23" class="observablehq observablehq--cell"></div><pre data-language="js"><code class="language-js"><span class="tok-keyword">const</span> <span class="tok-definition">ratio</span> = [<span class="tok-string">"FRED"</span>, <span class="tok-string">"Claude"</span>, <span class="tok-string">"ChatGPT"</span>]
+  .<span class="tok-definition">flatMap</span>(<span class="tok-definition">source</span> =&gt; <span class="tok-variable">MANGSP</span>
+    .<span class="tok-definition">filter</span>(<span class="tok-definition">d</span> =&gt; <span class="tok-variable">d</span>.<span class="tok-definition">source</span> === <span class="tok-variable">source</span>)
+    .<span class="tok-definition">map</span>(<span class="tok-definition">d</span> =&gt; ({
+      <span class="tok-definition">source</span>,
+      <span class="tok-definition">date</span>: <span class="tok-variable">d</span>.<span class="tok-definition">date</span>,
+      <span class="tok-definition">value</span>: <span class="tok-variable">d</span>.<span class="tok-definition">value</span> / <span class="tok-variable">GDPA</span>.<span class="tok-definition">find</span>(<span class="tok-definition">g</span> =&gt; +<span class="tok-variable">g</span>.<span class="tok-definition">date</span> === +<span class="tok-variable">d</span>.<span class="tok-definition">date</span> &amp;&amp; <span class="tok-variable">g</span>.<span class="tok-definition">source</span> === <span class="tok-variable">source</span>).<span class="tok-definition">value</span>
+    }))
+  );
+
+<span class="tok-variable">display</span>(<span class="tok-variable">ratio</span>)</code></pre><div id="cell-27" class="observablehq observablehq--cell"></div><div id="cell-28" class="observablehq observablehq--cell"></div><div id="cell-32" class="observablehq observablehq--cell"><div><p>ChatGPT’s manual transcription of both sides of the ratio appears to have been perfect. Claude’s was not; maybe it was just looking at yet another different methodology, but I think it was just wrong.</p>
+<p>So far we’ve only looked at the correctness of the data. Given the data, did Claude and ChatGPT plot them correctly? Overlaying our versions suggests they did (which is hard to see, since the lines match so well):</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center;"><a href="https://claude.ai/share/6c4602d1-3aad-4e67-9a49-72b23774acb6">Claude</a></th>
+      <th style="text-align: center;"><a href="https://chatgpt.com/share/689e7d77-f8dc-800b-8c9d-7f0b03587306">ChatGPT</a></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img src="" /></td>
+      <td><img src="" /></td>
+    </tr>
+  </tbody>
+</table>
+<p>So, the verdict is: ChatGPT was correct. Claude’s code was correct, but its “manual” transcription of the data it found introduced significant errors. (Recall that it seems to have converted millions to billions on the fly for the Massachusetts number; maybe that mental math increased errors.) Some may say this gives them confidence in ChatGPT. But for me, the divergent answers, and the amount of work it took to validate them, also confirms doubts about the quality of LLMs for data analysis.</p>
+<p>Interestingly, although ChatGPT and Claude wrote very different code for making their charts, both solutions were effectively equivalent and correct. We have not had to discuss them here because they worked fine. I think that makes intuitive sense; there’s far more entropy in the time series than in the code; the code is far more internally verifiable from first principles.</p>
+<p>If the LLMs were instead only supplying the data transformation and rendering code, and the data were fed in from a “lossless” and deterministic source, would you trust an LLM with this analysis? I don’t know. In this case it seems like they’d get it right.</p>
+<p>But they seem to make methodological choices without recognizing, acknowledging, or communicating their significance. Claude left a comment as if the U.S. GDP numbers were in trillions, which was wrong. ChatGPT quietly switched from using seasonally adjusted numbers to non-adjusted numbers. Neither tried using real dollars. I actually wouldn’t expect real vs. nominal to make a difference in a ratio, but using the FRED data, it does seem to:</p>
+</div></div><div id="cell-34" class="observablehq observablehq--cell"></div><div id="cell-33" class="observablehq observablehq--cell"><div><p>I believe the three charts above are all “correct”; they’re all using reasonable and official FRED series. But they still differ enough that you could make divergent inferences from them. For example, was 2020 a good year for Massachusetts relative to the nation, or a bad year? (I think I would say seasonal adjustment is apt to mislead for that year, so I’ll look at the non–seasonally adjusted figures, which suggest Massachusetts handled COVID well.)</p>
+<p>So, on the one hand, I might say we should forgive some fuzziness by the LLMs, because there’s plenty of fuzziness in the underlying territory already. But you could also say: because there are so many subtle methodological choices, it is that much more important that a solution should appreciate subtlety. The whole job is subtlety. Any analysis lives or dies by its subtleties. The devil is in the details.</p>
+<p>And this example is easy: the U.S. and Massachusetts GDPs are both officially defined by a standard trusted national authority, FRED. The prompt referred to precise extant metrics. It was a <em>lookup</em> problem. If you instead asked the LLM to measure Massachusetts’s contribution to the market value of the nation’s goods and services, in a world where “GDP” didn’t exist, there would be a lot more degrees of freedom, and answers would diverge much more.</p>
+<p>I notice I have a different emotional relationship to the artifacts of the LLMs. Notice that when I download a CSV from the FRED website and import it here, I call it the “real” data; when I look at the LLM’s copies, I would not presume to call it “real”. What I call “real” is intermediated by technologies including FRED’s data collection practices, its consumer price index, its website backend, its frontend, my fiber optic connection to the Internet, HTTP, the Chrome browser, the MacOS file system, and file parsing; but those are sufficiently leakless abstractions that I can presume to use the term “real”. LLMs are not.</p>
+<p>The other numbers aren’t real either! But does the LLM help me appreciate that, or does it mask it?</p>
+</div></div></main>
+  
+
+<style type="text/css">:root {
+  --syntax-link: var(--theme-foreground-focus);
+  --syntax-keyword: #e36209;
+  --syntax-atom: #032f62;
+  --syntax-literal: #6f42c1;
+  --syntax-string: #22863a;
+  --syntax-comment: var(--theme-foreground-muted);
+  --syntax-invalid: var(--theme-error);
+  --syntax-definition: #005cc5;
+  --syntax-variable: var(--theme-foreground-alt);
+  --syntax-meta: #d73a49;
+}
+
+:root {
+  --theme-background-b: color-mix(in srgb, var(--theme-foreground) 4%, var(--theme-background-a));
+  --theme-background: var(--theme-background-a);
+  --theme-background-alt: var(--theme-background-b);
+  --theme-foreground-alt: color-mix(in srgb, var(--theme-foreground) 90%, var(--theme-background-a));
+  --theme-foreground-muted: color-mix(in srgb, var(--theme-foreground) 60%, var(--theme-background-a));
+  --theme-foreground-faint: color-mix(in srgb, var(--theme-foreground) 50%, var(--theme-background-a));
+  --theme-foreground-fainter: color-mix(in srgb, var(--theme-foreground) 30%, var(--theme-background-a));
+  --theme-foreground-faintest: color-mix(in srgb, var(--theme-foreground) 14%, var(--theme-background-a));
+  --theme-error: #e7040f;
+  color-scheme: light;
+}
+
+:root {
+  --theme-foreground: #1b1e23;
+  --theme-foreground-focus: #3b5fc0;
+  --theme-background-a: #ffffff;
+}
+</style></body></html>

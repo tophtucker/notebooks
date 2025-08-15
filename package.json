@@ -1,0 +1,26 @@
+{
+  "name": "notebooks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "docs:preview": "notebooks preview --root docs",
+    "docs:build": "notebooks build --root docs -- docs/*.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tophtucker/notebooks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tophtucker/notebooks/issues"
+  },
+  "homepage": "https://github.com/tophtucker/notebooks#readme",
+  "dependencies": {
+    "@observablehq/notebook-kit": "^1.0.1"
+  }
+}
