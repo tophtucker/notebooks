@@ -1,0 +1,77 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Ostrich Room — Sanity import</title>
+  <script id="1" type="text/markdown">
+    # Ostrich Room — Sanity import
+    July 31, 2025
+  </script>
+  <script id="7" type="module" pinned="">
+    const raw = await FileAttachment("./musical-acts-2025-07-31.csv").csv({typed: true})
+    display(raw)
+  </script>
+  <script id="6" type="module" pinned="">
+    const acts = [...new Set(raw.map(d => d.description))].map((name, i) => ({
+      _id: `act-${i}`,
+      _type: "act",
+      name
+    }));
+    display(acts);
+  </script>
+  <script id="8" type="module" pinned="">
+    const performances = raw.map((p, i) => {
+      const act = acts.find(a => a.name === p.description);
+      return {
+        _id: `perf-${i}`,
+        _type: "performance",
+        startTime: offsetDate(p.date, p.startTime || 0),
+        endTime: p.endTime ? offsetDate(p.date, p.endTime) : null,
+        noTime: !p.startTime,
+        note: p.note,
+        act: {_type: "reference", _ref: act._id}
+      }
+    })
+    display(performances)
+  </script>
+  <script id="9" type="module" pinned="">
+    const hrToMs = 1000 * 60 * 60;
+    const dst = d3.scaleThreshold(
+      [
+        new Date(Date.UTC(2024, 2, 10)), // Mar 10, 2024
+        new Date(Date.UTC(2024, 10, 3)), // Nov 3, 2024
+        new Date(Date.UTC(2025, 2, 9)), // Mar 9, 2025
+        new Date(Date.UTC(2025, 10, 2)), // Nov 2, 2025
+      ],
+      [-5, -4, -5, -4, -5]
+    );
+    function offsetDate(date, localHours) {
+      const tz = dst(date);
+      return new Date(+date + (localHours - tz) * hrToMs);
+    }
+  </script>
+  <script id="11" type="module" pinned="">
+    const formattedPerformances = performances.map(p => {
+      const t = p.startTime?.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        timeZone: 'America/New_York',
+        ...(p.noTime
+          ? {}
+          : {hour: '2-digit', minute: '2-digit'}
+        )
+      });
+      const a = acts.find(d => d._id === p.act._ref);
+      return `${a.name} (${t})`
+    });
+
+    display(formattedPerformances);
+  </script>
+  <script id="15" type="module" pinned="">
+    `${acts.map(JSON.stringify).join("\n")}
+    ${performances.map(JSON.stringify).join("\n")}`
+  </script>
+  <script id="16" type="module" pinned="">
+    performances.at(-1)
+  </script>
+</notebook>

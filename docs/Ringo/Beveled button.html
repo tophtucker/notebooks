@@ -1,0 +1,494 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Bevel button</title>
+  <script id="1" type="text/markdown">
+    # Bevel button
+  </script>
+  <script id="2" type="module">
+    const button1 = htl.html`<div class="button1">
+
+    <div></div>
+    <div></div>
+    <div></div>
+
+    <div></div>
+    <div class="content">Book a room</div>
+    <div></div>
+
+    <div></div>
+    <div></div>
+    <div></div>
+
+    </div>
+
+    <style>
+
+    .button1 {
+      border: 1px solid black;
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+      gap: 1px;
+      padding: 1px;
+    }
+
+    .button1 > div {
+      border: 1px solid black;
+    }
+
+    .button1 .content {
+    padding: 3px 6px;
+    }
+
+    </style>`
+
+    display(button1);
+  </script>
+  <script id="5" type="module">
+    const button11 = htl.html`<div class="button11">
+
+    <div class="filled"></div>
+    <div></div>
+    <div class="filled"></div>
+
+    <div></div>
+    <div class="content">Book a room</div>
+    <div></div>
+
+    <div class="filled"></div>
+    <div></div>
+    <div class="filled"></div>
+
+    </div>
+
+    <style>
+
+    .button11 {
+      border: 1px solid black;
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+      gap: 1px;
+      padding: 1px;
+    }
+
+    .button11 > div {
+      border: 1px solid black;
+    }
+
+    .button11 .content {
+      padding: 3px 6px;
+    }
+
+    .button11 .filled {
+      background: black;
+    }
+
+    </style>`
+
+    display(button11);
+  </script>
+  <script id="6" type="module">
+    const button12 = htl.html`<div class="button12">
+
+    <div class="filled"></div>
+    <div></div>
+    <div class="filled"></div>
+
+    <div></div>
+    <div class="content">Book a room</div>
+    <div></div>
+
+    <div class="filled"></div>
+    <div></div>
+    <div class="filled"></div>
+
+    </div>
+
+    <style>
+
+    .button12 {
+      border: 1px solid black;
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+      padding: 1px;
+    }
+
+    .button12 .content {
+      border: 1px solid black;
+    }
+
+    .button12 .content {
+      padding: 3px 6px;
+    }
+
+    .button12 .filled {
+      background: black;
+    }
+
+    </style>`
+
+    display(button12);
+  </script>
+  <script id="7" type="module">
+    const button13 = htl.html`<div class="button13">
+
+    <div class="filled"></div>
+    <div class="left-right"></div>
+    <div class="filled"></div>
+
+    <div class="top-bottom"></div>
+    <div class="content">Book a room</div>
+    <div class="top-bottom"></div>
+
+    <div class="filled"></div>
+    <div class="left-right"></div>
+    <div class="filled"></div>
+
+    </div>
+
+    <style>
+
+    .button13 {
+      border: 1px solid black;
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+    }
+
+    .button13 .content {
+      border: 1px solid black;
+    }
+
+    .button13 .content {
+      padding: 3px 6px;
+    }
+
+    .button13 .filled {
+      background: black;
+    }
+
+    .button13 .top-bottom {
+      border-top: 1px solid black;
+      border-bottom: 1px solid black;
+    }
+
+    .button13 .left-right {
+      border-left: 1px solid black;
+      border-right: 1px solid black;
+    }
+
+    </style>`
+
+    display(button13);
+  </script>
+  <script id="3" type="module">
+    const diagonal1 = (top, bottom) => {
+      const d = "M -1 -1 5 5";
+      const stroke = top && bottom ? "white" : "black";
+      return htl.html`<svg width="4" height="4" style="display: block;">
+        <path d=${`${d} V 0 Z`} fill=${top ? "black" : "none"} />
+        <path d=${`${d} H 0 Z`} fill=${bottom ? "black" : "none"} />
+        <path d=${d} stroke=${stroke} />
+      </svg>`
+    }
+
+    const diagonal2 = (top, bottom) => {
+      const d = "M 5 -1 -1 5";
+      const stroke = top && bottom ? "white" : "black";
+      return htl.html`<svg width="4" height="4" style="display: block;">
+        <path d=${`${d} V 0 Z`} fill=${bottom ? "black" : "none"} />
+        <path d=${`${d} H 4 Z`} fill=${top ? "black" : "none"} />
+        <path d=${d} stroke=${stroke} />
+      </svg>`
+    }
+
+    const button2 = htl.html`<div class="button2">
+
+    <div>${diagonal1(true, true)}</div>
+    <div class="bottom"></div>
+    <div>${diagonal2(false, true)}</div>
+
+    <div class="right"></div>
+    <div class="content">Book a room</div>
+    <div class="left"></div>
+
+    <div>${diagonal2(false, true)}</div>
+    <div class="top"></div>
+    <div>${diagonal1(false, false)}</div>
+
+    </div>
+
+    <style>
+
+    .button2 {
+      border: 1px solid black;
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+    }
+
+    .button2 .content {
+      padding: 3px 6px;
+    }
+
+    .button2 .bottom {
+      border-bottom: 1px solid black;
+      background: black;
+    }
+
+    .button2 .top {
+      border-top: 1px solid black;
+    }
+
+    .button2 .left {
+      border-left: 1px solid black;
+    }
+
+    .button2 .right {
+      border-right: 1px solid black;
+      background: black;
+    }
+
+    </style>`;
+
+    display(button2);
+  </script>
+  <script id="9" type="module">
+    const diagonalPath1 = "M -1 -1 5 5";
+    const diagonalPath2 = "M 5 -1 -1 5";
+
+    const button3 = htl.html`<div class="button3">
+    <!-- TOP -->
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath1} V 0 Z`} fill="#666" />
+      <path d=${`${diagonalPath1} H 0 Z`} fill="#666" />
+      <path d=${diagonalPath1} stroke="#ccc" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+    </svg>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" height="4" width="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="#666" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+    </svg>
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath2} V 0 Z`} fill="#666" />
+      <path d=${`${diagonalPath2} H 0 Z`} fill="none" />
+      <path d=${diagonalPath2} stroke="black" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+
+    <!-- MIDDLE -->
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" width="4" height="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="#666" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+    <div class="content">Book a room</div>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" width="4" height="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="none" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+
+    <!-- BOTTOM -->
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath2} V 0 Z`} fill="#666" />
+      <path d=${`${diagonalPath2} H 0 Z`} fill="none" />
+      <path d=${diagonalPath2} stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+    </svg>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" height="4" width="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="none" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+    </svg>
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath1} V 0 Z`} fill="none" />
+      <path d=${`${diagonalPath1} H 0 Z`} fill="none" />
+      <path d=${diagonalPath1} stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+
+    </div>
+
+
+    <style>
+    .button3 {
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+    }
+    .button3 .content {
+      padding: 3px 6px;
+    }
+    </style>
+    `
+
+    display(button3)
+  </script>
+  <script id="12" type="module">
+    const diagonalPath1 = "M -1 -1 5 5";
+    const diagonalPath2 = "M 5 -1 -1 5";
+
+    const button4 = htl.html`<div class="button4">
+    <!-- TOP -->
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath1} V 0 Z`} fill="#000" />
+      <path d=${`${diagonalPath1} H 0 Z`} fill="#000" />
+      <path d=${diagonalPath1} stroke="#ccc" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+    </svg>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" height="4" width="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="#000" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+    </svg>
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath2} V 0 Z`} fill="#000" />
+      <path d=${`${diagonalPath2} H 0 Z`} fill="none" />
+      <path d=${diagonalPath2} stroke="black" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+
+    <!-- MIDDLE -->
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" width="4" height="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="#000" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+    <div class="content">Book a room</div>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" width="4" height="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="none" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+
+    <!-- BOTTOM -->
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath2} V 0 Z`} fill="#000" />
+      <path d=${`${diagonalPath2} H 0 Z`} fill="none" />
+      <path d=${diagonalPath2} stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+      <path d="M 0.5 0 V 4" stroke="black" />
+    </svg>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" height="4" width="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="none" />
+      <path d="M 0 0.5 H 4" stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+    </svg>
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath1} V 0 Z`} fill="none" />
+      <path d=${`${diagonalPath1} H 0 Z`} fill="none" />
+      <path d=${diagonalPath1} stroke="black" />
+      <path d="M 0 3.5 H 4" stroke="black" />
+      <path d="M 3.5 0 V 4" stroke="black" />
+    </svg>
+
+    </div>
+
+
+    <style>
+    .button4 {
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+      box-shadow: -2px -2px 3px #ddd;
+    }
+    .button4 .content {
+      padding: 3px 6px;
+      box-shadow: inset -2px -2px 3px #ddd;
+    }
+    </style>
+    `
+
+    display(button4)
+  </script>
+  <script id="13" type="module">
+    const diagonalPath1 = "M -1 -1 5 5";
+    const diagonalPath2 = "M 5 -1 -1 5";
+
+    const button5 = htl.html`<div class="button5">
+    <!-- TOP -->
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath1} V 0 Z`} fill="#02718a" />
+      <path d=${`${diagonalPath1} H 0 Z`} fill="#02718a" />
+      <path d="M 0 0.5 H 4" stroke="#02718a" />
+      <path d="M 0.5 0 V 4" stroke="#02718a" />
+      <path d=${diagonalPath1} stroke="white" />
+    </svg>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" height="4" width="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="#02718a" />
+      <path d="M 0 0.5 H 4" stroke="#02718a" />
+      <path d="M 0 3.5 H 4" stroke="#02718a" />
+    </svg>
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath2} V 0 Z`} fill="#02718a" />
+      <path d=${`${diagonalPath2} H 0 Z`} fill="none" />
+      <path d="M 0 0.5 H 4" stroke="#02718a" />
+      <path d="M 3.5 0 V 4" stroke="#02718a" />
+      <path d=${diagonalPath2} stroke="#02718a" />
+    </svg>
+
+    <!-- MIDDLE -->
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" width="4" height="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="#02718a" />
+      <path d="M 0.5 0 V 4" stroke="#02718a" />
+      <path d="M 3.5 0 V 4" stroke="#02718a" />
+    </svg>
+    <div class="content">Book a room</div>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" width="4" height="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="none" />
+      <path d="M 0.5 0 V 4" stroke="#02718a" />
+      <path d="M 3.5 0 V 4" stroke="#02718a" />
+    </svg>
+
+    <!-- BOTTOM -->
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath2} V 0 Z`} fill="#02718a" />
+      <path d=${`${diagonalPath2} H 0 Z`} fill="none" />
+      <path d="M 0 3.5 H 4" stroke="#02718a" />
+      <path d="M 0.5 0 V 4" stroke="#02718a" />
+      <path d=${diagonalPath2} stroke="#02718a" />
+    </svg>
+    <svg preserveAspectRatio="none" viewBox="0 0 4 4" height="4" width="100%" >
+      <path d="M 0 0 H 4 V 4 H 0 Z" fill="none" />
+      <path d="M 0 0.5 H 4" stroke="#02718a" />
+      <path d="M 0 3.5 H 4" stroke="#02718a" />
+    </svg>
+    <svg width="4" height="4">
+      <path d=${`${diagonalPath1} V 0 Z`} fill="none" />
+      <path d=${`${diagonalPath1} H 0 Z`} fill="none" />
+      <path d="M 0 3.5 H 4" stroke="#02718a" />
+      <path d="M 3.5 0 V 4" stroke="#02718a" />
+      <path d=${diagonalPath1} stroke="#02718a" />
+    </svg>
+
+    </div>
+
+
+    <style>
+    .button5 {
+      display: inline-grid;
+      grid-template-columns: 4px 1fr 4px;
+      grid-template-rows: 4px 1fr 4px;
+      box-shadow: -2px -2px 3px #ddd;
+      color: #02718a;
+    }
+    .button5 .content {
+      padding: 3px 6px;
+      box-shadow: inset -2px -2px 3px #ddd;
+    }
+    </style>
+    `
+
+    display(button5)
+  </script>
+</notebook>

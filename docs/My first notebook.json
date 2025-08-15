@@ -1,0 +1,24 @@
+{
+  "nodes": [
+    {
+      "id": 1,
+      "value": "md`# 😎`"
+    },
+    {
+      "id": 2,
+      "value": "now"
+    },
+    {
+      "id": 3,
+      "value": "// htl.html`<div style=${{fontSize: `${24 * (1 + Math.sin(now / 5000))}px`}}>Hello notebooks</div>`"
+    },
+    {
+      "id": 5,
+      "value": "Plot.barX([0, 1, 2, 3]).plot()"
+    },
+    {
+      "id": 7,
+      "value": "Inputs.range([0, 1])"
+    }
+  ]
+}

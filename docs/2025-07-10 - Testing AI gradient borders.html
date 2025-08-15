@@ -1,0 +1,336 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Testing AI</title>
+  <script id="1" type="text/markdown">
+    # Testing AI
+    ## July 10, 2025
+  </script>
+  <script id="2" type="module" pinned="">
+    const input = htl.html`<div class="gradient-input-container">
+      <div class="gradient-border"></div>
+      <input type="text" class="gradient-input" placeholder="Type something...">
+      <style>
+        .gradient-input-container {
+          position: relative;
+          display: inline-block;
+          padding: 4px;
+        }
+
+        .gradient-border {
+          position: absolute;
+          inset: 0;
+          border-radius: 12px;
+          padding: 3px;
+          background: conic-gradient(from 0deg,
+            #ff6b6b, #4ecdc4, #45b7d1, #96ceb4,
+            #feca57, #ff9ff3, #54a0ff, #ff6b6b);
+          animation: spin 2s linear infinite;
+        }
+
+        .gradient-border::before {
+          content: '';
+          position: absolute;
+          inset: 3px;
+          border-radius: 8px;
+          background: white;
+        }
+
+        .gradient-input {
+          width: 400px;
+          height: 50px;
+          padding: 12px 16px;
+          border: none;
+          border-radius: 8px;
+          background: transparent;
+          font-size: 16px;
+          outline: none;
+          position: relative;
+          z-index: 1;
+          color: #333;
+        }
+
+        .gradient-input::placeholder {
+          color: #999;
+        }
+
+        .gradient-input:focus {
+          background: rgba(255, 255, 255, 0.95);
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+    </div>`;
+
+    display(input);
+  </script>
+  <script id="5" type="text/markdown">
+    _Copied from AI prompt_
+
+    When a radial gradient rotates and intersects with a wide, short rectangle, the speed at which the gradient boundary crosses different points along the rectangle’s edges varies according to trigonometric functions.
+
+    Let me create a visualization to demonstrate this:
+
+    The speed at which a rotating radial gradient boundary crosses the rectangle edges follows these functions:
+
+    For horizontal edges (top/bottom):
+
+    - Speed = |1/cos(θ)| = |sec(θ)|
+    - Maximum speed occurs when θ approaches ±90°, ±270° (line nearly horizontal)
+    - Minimum speed occurs at θ = 0°, 180° (line vertical)
+
+    For vertical edges (left/right):
+
+    - Speed = |1/sin(θ)| = |csc(θ)|
+    - Maximum speed occurs when θ approaches 0°, 180° (line nearly vertical)
+    - Minimum speed occurs at θ = ±90°, ±270° (line horizontal)
+
+    This creates the characteristic “whipping” effect where the gradient boundary moves slowly when perpendicular to an edge, then accelerates dramatically as it becomes parallel to that edge.
+  </script>
+  <script id="4" type="module" pinned="">
+    const canvas = htl.html`<canvas width="800" height="400" style="border: 1px solid #ccc;"></canvas>`;
+    const ctx = canvas.getContext('2d');
+
+    let angle = 0;
+    let frame;
+
+    function drawVisualization() {
+      // Clear canvas
+      ctx.fillStyle = 'white';
+      ctx.fillRect(0, 0, 800, 400);
+
+      const centerX = 400;
+      const centerY = 200;
+      const rectWidth = 600;
+      const rectHeight = 100;
+      const rectLeft = centerX - rectWidth/2;
+      const rectTop = centerY - rectHeight/2;
+
+      // Draw rectangle
+      ctx.strokeStyle = '#333';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(rectLeft, rectTop, rectWidth, rectHeight);
+
+      // Draw rotating line from center
+      const lineLength = 400;
+      const endX = centerX + Math.cos(angle) * lineLength;
+      const endY = centerY + Math.sin(angle) * lineLength;
+
+      ctx.strokeStyle = '#ff4444';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(centerX, centerY);
+      ctx.lineTo(endX, endY);
+      ctx.stroke();
+
+      // Calculate intersection points with rectangle edges
+      const intersections = [];
+
+      // Top edge (y = rectTop)
+      if (Math.sin(angle) < 0) {
+        const x = centerX - (centerY - rectTop) / Math.tan(angle);
+        if (x >= rectLeft && x <= rectLeft + rectWidth) {
+          intersections.push({x, y: rectTop, edge: 'top'});
+        }
+      }
+
+      // Bottom edge (y = rectTop + rectHeight)
+      if (Math.sin(angle) > 0) {
+        const x = centerX + (rectTop + rectHeight - centerY) / Math.tan(angle);
+        if (x >= rectLeft && x <= rectLeft + rectWidth) {
+          intersections.push({x, y: rectTop + rectHeight, edge: 'bottom'});
+        }
+      }
+
+      // Left edge (x = rectLeft)
+      if (Math.cos(angle) < 0) {
+        const y = centerY - (centerX - rectLeft) * Math.tan(angle);
+        if (y >= rectTop && y <= rectTop + rectHeight) {
+          intersections.push({x: rectLeft, y, edge: 'left'});
+        }
+      }
+
+      // Right edge (x = rectLeft + rectWidth)
+      if (Math.cos(angle) > 0) {
+        const y = centerY + (rectLeft + rectWidth - centerX) * Math.tan(angle);
+        if (y >= rectTop && y <= rectTop + rectHeight) {
+          intersections.push({x: rectLeft + rectWidth, y, edge: 'right'});
+        }
+      }
+
+      // Draw intersection points
+      intersections.forEach(point => {
+        ctx.fillStyle = '#ff4444';
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, 6, 0, 2 * Math.PI);
+        ctx.fill();
+      });
+
+      // Draw speed indicators
+      ctx.fillStyle = '#333';
+      ctx.font = '14px Arial';
+
+      intersections.forEach(point => {
+        let speed;
+        switch(point.edge) {
+          case 'top':
+          case 'bottom':
+            // Speed = |1/cos(angle)| for horizontal edges
+            speed = Math.abs(1 / Math.cos(angle));
+            break;
+          case 'left':
+          case 'right':
+            // Speed = |1/sin(angle)| for vertical edges
+            speed = Math.abs(1 / Math.sin(angle));
+            break;
+        }
+
+        if (isFinite(speed)) {
+          ctx.fillText(`Speed: ${speed.toFixed(2)}`, point.x + 10, point.y - 10);
+        }
+      });
+
+      // Show current angle
+      ctx.fillText(`Angle: ${(angle * 180 / Math.PI).toFixed(1)}°`, 10, 30);
+
+      angle += 0.02;
+      frame = requestAnimationFrame(drawVisualization);
+    }
+
+    drawVisualization();
+    invalidation.then(() => cancelAnimationFrame(frame));
+
+    display(canvas);
+  </script>
+  <script id="6" type="module" pinned="">
+    // Plot of |sec(θ)| and |csc(θ)| functions
+    const plot = Plot.plot({
+      width: 800,
+      height: 400,
+      x: {
+        domain: [0, 4 * Math.PI],
+        label: "θ (radians)",
+        tickFormat: (d) => {
+          const pi = Math.PI;
+          if (d === 0) return "0";
+          if (d === pi/2) return "π/2";
+          if (d === pi) return "π";
+          if (d === 3*pi/2) return "3π/2";
+          if (d === 2*pi) return "2π";
+          if (d === 5*pi/2) return "5π/2";
+          if (d === 3*pi) return "3π";
+          if (d === 7*pi/2) return "7π/2";
+          if (d === 4*pi) return "4π";
+          return "";
+        },
+        ticks: [0, Math.PI/2, Math.PI, 3*Math.PI/2, 2*Math.PI, 5*Math.PI/2, 3*Math.PI, 7*Math.PI/2, 4*Math.PI]
+      },
+      y: {
+        domain: [0, 10],
+        label: "Speed multiplier",
+        clamp: true
+      },
+      marks: [
+        // |sec(θ)| = |1/cos(θ)| - speed on horizontal edges
+        Plot.line(
+          d3.range(0, 4 * Math.PI, 0.01)
+            .filter(theta => Math.abs(Math.cos(theta)) > 0.1) // Avoid singularities
+            .map(theta => ({
+              theta,
+              speed: Math.abs(1 / Math.cos(theta)),
+              type: "|sec(θ)| - Horizontal edges"
+            })),
+          {
+            x: "theta",
+            y: "speed",
+            stroke: "#ff4444",
+            strokeWidth: 2
+          }
+        ),
+
+        // |csc(θ)| = |1/sin(θ)| - speed on vertical edges
+        Plot.line(
+          d3.range(0, 4 * Math.PI, 0.01)
+            .filter(theta => Math.abs(Math.sin(theta)) > 0.1) // Avoid singularities
+            .map(theta => ({
+              theta,
+              speed: Math.abs(1 / Math.sin(theta)),
+              type: "|csc(θ)| - Vertical edges"
+            })),
+          {
+            x: "theta",
+            y: "speed",
+            stroke: "#4444ff",
+            strokeWidth: 2
+          }
+        ),
+
+        // Vertical lines at singularities
+        Plot.ruleY([10], {
+          x: [0, Math.PI, 2*Math.PI, 3*Math.PI, 4*Math.PI],
+          stroke: "#4444ff",
+          strokeDasharray: "4,4",
+          strokeOpacity: 0.5
+        }),
+
+        Plot.ruleY([10], {
+          x: [Math.PI/2, 3*Math.PI/2, 5*Math.PI/2, 7*Math.PI/2],
+          stroke: "#ff4444",
+          strokeDasharray: "4,4",
+          strokeOpacity: 0.5
+        }),
+
+        // Reference line at speed = 1
+        Plot.ruleY([1], {
+          stroke: "#666",
+          strokeDasharray: "2,2",
+          strokeOpacity: 0.7
+        })
+      ],
+      color: {
+        legend: true,
+        domain: ["|sec(θ)| - Horizontal edges", "|csc(θ)| - Vertical edges"],
+        range: ["#ff4444", "#4444ff"]
+      },
+      caption: "Speed at which rotating gradient boundary crosses rectangle edges. Dashed lines show singularities where speed approaches infinity."
+    });
+
+    display(plot);
+  </script>
+  <script id="7" type="module" pinned="">
+    // Simple math examples
+    const a = 10;
+    const b = 5;
+
+    display(`Addition: ${a} + ${b} = ${a + b}`);
+    display(`Subtraction: ${a} - ${b} = ${a - b}`);
+    display(`Multiplication: ${a} × ${b} = ${a * b}`);
+    display(`Division: ${a} ÷ ${b} = ${a / b}`);
+
+    // More advanced operations
+    const numbers = [1, 2, 3, 4, 5];
+    const sum = numbers.reduce((acc, num) => acc + num, 0);
+    const average = sum / numbers.length;
+
+    display(`Array: [${numbers.join(', ')}]`);
+    display(`Sum: ${sum}`);
+    display(`Average: ${average}`);
+
+    // Powers and roots
+    display(`${a} squared: ${Math.pow(a, 2)}`);
+    display(`Square root of ${a * a}: ${Math.sqrt(a * a)}`);
+    display(`${a} to the power of ${b}: ${Math.pow(a, b)}`);
+  </script>
+  <script id="8" type="module" pinned="">
+    1 + 1
+  </script>
+  <script id="9" type="module" pinned="">
+    1 + 1 + 1
+  </script>
+</notebook>

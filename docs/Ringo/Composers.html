@@ -1,0 +1,57 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Composers</title>
+  <script id="1" type="text/markdown">
+    # Composers
+  </script>
+  <script id="2" type="module" pinned="">
+    const data = d3.sort(d3.csvParse(`name,born,died
+    Johann Sebastian Bach,1685,1750
+    Ludwig van Beethoven,1770,1827
+    Wolfgang Amadeus Mozart,1756,1791
+    Franz Schubert,1797,1828
+    Joseph Haydn,1732,1809
+    Frédéric Chopin,1810,1849
+    Richard Wagner,1813,1883
+    Pyotr Ilyich Tchaikovsky,1840,1893
+    Antonio Vivaldi,1678,1741
+    Claude Debussy,1862,1918
+    Igor Stravinsky,1882,1971
+    Sergei Rachmaninoff,1873,1943
+    Gustav Mahler,1860,1911
+    Felix Mendelssohn,1809,1847
+    Robert Schumann,1810,1856
+    Johannes Brahms,1833,1897
+    George Frideric Handel,1685,1759
+    Dmitri Shostakovich,1906,1975
+    Camille Saint-Saëns,1835,1921
+    Jean Sibelius,1865,1957
+    Edward Elgar,1857,1934
+    Leoš Janáček,1854,1928
+    Bedřich Smetana,1824,1884
+    Modest Petrovich Mussorgsky,1839,1881
+    Hubert Parry,1848,1918
+    Krzysztof Penderecki,1933,2020
+    Nikolai Rimsky-Korsakov,1844,1908
+    Benjamin Britten,1913,1976
+    Gabriel Fauré,1845,1924
+    John Cage,1912,1992
+    Aaron Copland,1900,1990
+    Philip Glass,1937,
+    John Williams,1932,`, d3.autoType), (a, b) => d3.ascending(a.born, b.born))
+    display(data);
+  </script>
+  <script id="3" type="module" pinned="">
+    Plot.plot({
+      insetLeft: 100,
+      y: {axis: false, domain: data.map(d => d.name)},
+      x: {tickFormat: d => String(d), label: null, grid: true},
+      marks: [
+        Plot.ruleY(data, {x1: "born", x2: d => d.died || new Date().getFullYear(), y: "name"}),
+        Plot.text(data, {x: "born", y: "name", text: "name", textAnchor: "end", dx: -4}),
+        Plot.dot(data, {x: "born", y: "name", symbol: "circle", fill: "black", r: 2}),
+        Plot.dot(data, {x: "died", y: "name", symbol: "square", fill: "black", r: 2})
+      ]
+    })
+  </script>
+</notebook>

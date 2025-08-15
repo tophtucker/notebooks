@@ -1,0 +1,318 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Massachusetts vs. U.S. GDP over time</title>
+  <script id="1" type="text/markdown">
+    # Massachusetts vs. U.S. GDP over time
+
+    I said the same thing to Claude (Sonnet 4) and ChatGPT (5 Thinking): “make a chart of Massachusetts's share of U.S. GDP over time”.
+
+    They both searched the web. Then Claude created an artifact with an interactive Chart.js line chart, and ChatGPT ran some Python to generate a static image. They both looked like they had completed the task, but their answers disagreed:
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: center;"><a href="https://claude.ai/share/6c4602d1-3aad-4e67-9a49-72b23774acb6">Claude</a></th>
+          <th style="text-align: center;"><a href="https://chatgpt.com/share/689e7d77-f8dc-800b-8c9d-7f0b03587306">ChatGPT</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img src=${await FileAttachment("claude.png").url()} /></td>
+          <td><img src=${await FileAttachment("chatgpt.png").url()} /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    In their searching, we can see that they both landed on the same two FRED series: [Gross Domestic Product (GDP)](https://fred.stlouisfed.org/series/GDP) and [Gross Domestic Product: All Industry Total in Massachusetts (MANGSP)](https://fred.stlouisfed.org/series/MANGSP). “I can manually copy the values for 1997-2024 from both tables,” said ChatGPT; “It’s a bit tedious but manageable with 28 rows.” They both hardcoded the “manually” transcribed data into their code.
+
+    Claude’s data was:
+  </script>
+  <script id="2" type="module" pinned="">
+    // Massachusetts GDP and U.S. GDP data (in billions/trillions)
+    const claude = {
+      years: [1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+      maGDP: [274.2, 292.8, 310.5, 334.7, 348.2, 356.4, 367.8, 388.2, 408.9, 427.3, 441.8, 450.2, 435.8, 457.2, 474.6, 493.8, 507.9, 526.4, 545.8, 559.2, 578.3, 603.2, 625.8, 592.7, 649.5, 695.6, 736.3, 780.7],
+      usGDP: [8608.5, 9089.2, 9660.6, 10252.3, 10581.8, 10929.1, 11458.2, 12213.7, 13036.6, 13815.6, 14477.6, 14718.6, 14418.7, 14992.1, 15542.6, 16197.0, 16784.8, 17527.3, 18120.7, 18624.5, 19485.4, 20533.1, 21372.6, 20953.0, 23315.1, 25462.7, 27361.0, 29184.9]
+    };
+    display(claude);
+  </script>
+  <script id="4" type="text/markdown">
+    ChatGPT’s, translated from Python, was:
+  </script>
+  <script id="5" type="module" pinned="">
+    const chatgpt = {
+      years: d3.range(1997, 2025),
+      // Massachusetts current-dollar GDP, Millions of Dollars (MANGSP)
+      ma_gdp_millions: [
+        236435.6, 247686.8, 262868.8, 287091.4, 294876.4, 299915.8, 309736.1, 324919.0,
+        340637.8, 358418.3, 377985.6, 387923.4, 388963.9, 409270.0, 423684.9, 441373.9,
+        452580.4, 469824.9, 497767.0, 514108.0, 530129.4, 559605.0, 588069.5, 592653.0,
+        649511.4, 695612.1, 736296.3, 780666.2
+      ],
+      // U.S. current-dollar GDP, Billions of Dollars (GDPA)
+      us_gdp_billions: [
+        8577.552, 9062.817, 9631.172, 10250.952, 10581.929, 10929.108, 11456.450, 12217.196,
+        13039.197, 13815.583, 14474.228, 14769.862, 14478.067, 15048.971, 15599.732, 16253.970,
+        16880.683, 17608.138, 18295.019, 18804.913, 19612.102, 20656.516, 21539.982, 21354.105,
+        23681.171, 26006.893, 27720.709, 29184.890
+      ]
+    };
+    display(chatgpt);
+  </script>
+  <script id="7" type="text/markdown">
+    Claude’s comment above claims its numbers are in “billions/trillions”, but in fact I think they’re all billions, which suggests it may have convered the Massachusetts FRED series “in its head”, on the fly, during transcription. ChatGPT, as its comments indicate, has left Massachusetts in millions, like in the original FRED series.
+
+    I’ll convert all figures to billions, so they’re comparable, and pull in the real data from CSVs downloaded from FRED.
+  </script>
+  <script id="10" type="module">
+    const MANGSP = [
+      ...(await FileAttachment("MANGSP.csv").csv({typed: true})).map(d => ({date: d.observation_date, value: d.MANGSP / 1000, source: "FRED"})),
+      ...chatgpt.years.map((d, i) => ({date: new Date(Date.UTC(d, 0, 1)), value: chatgpt.ma_gdp_millions[i] / 1000, source: "ChatGPT"})),
+      ...claude.years.map((d, i) => ({date: new Date(Date.UTC(d, 0, 1)), value: claude.maGDP[i], source: "Claude"}))
+    ];
+
+    const GDP = [
+      ...(await FileAttachment("GDP.csv").csv({typed: true})).map(d => ({date: d.observation_date, value: d.GDP, source: "FRED"})),
+      ...chatgpt.years.map((d, i) => ({date: new Date(Date.UTC(d, 0, 1)), value: chatgpt.us_gdp_billions[i], source: "ChatGPT"})),
+      ...claude.years.map((d, i) => ({date: new Date(Date.UTC(d, 0, 1)), value: claude.usGDP[i], source: "Claude"}))
+    ];
+
+    display({GDP, MANGSP});
+  </script>
+  <script id="20" type="text/markdown">
+    Now we can compare the different sources of MANGSP:
+  </script>
+  <script id="12" type="module">
+    Plot.plot({
+      title: "MANGSP",
+      marginRight: 60,
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "$ (billions)"},
+      color: {legend: true, domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.lineY(MANGSP.filter(d => d.source === "FRED"), {x: "date", y: "value", strokeWidth: 4, strokeDasharray: "3,6", opacity: 0.3}),
+        Plot.lineY(MANGSP.filter(d => d.source !== "FRED"), {x: "date", y: "value", stroke: "source"})
+      ]
+    })
+  </script>
+  <script id="19" type="module">
+    function getErrors(data) {
+      const actual = data.filter(d => d.source === "FRED");
+      return ["ChatGPT", "Claude"]
+        .flatMap(source => data
+          .filter(d => d.source === source)
+          .map(d => ({
+            date: d.date,
+            error: d.value - actual.find(a => +a.date === +d.date).value,
+            source
+          }))
+        );
+    }
+
+    display(Plot.plot({
+      height: 160,
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "Error"},
+      fy: {label: null},
+      color: {domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marginRight: 60,
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.ruleY([0], {stroke: "#ccc"}),
+        Plot.rectY(getErrors(MANGSP), {x: "date", y: "error", fy: "source", interval: "year", fill: "source"})
+      ]
+    }))
+  </script>
+  <script id="21" type="text/markdown">
+    ChatGPT transcribed it perfectly. Claude overestimated it until 2020, when it became spot-on. As for GDP:
+  </script>
+  <script id="13" type="module">
+    Plot.plot({
+      title: "GDP",
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "$ (billions)", tickFormat: ".0s"},
+      marginRight: 60,
+      color: {legend: true, domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.lineY(GDP.filter(d => d.source === "FRED"), {x: "date", y: "value", strokeWidth: 4, strokeDasharray: "3,6", opacity: 0.3}),
+        Plot.lineY(GDP.filter(d => d.source !== "FRED"), {x: "date", y: "value", stroke: "source"})
+      ]
+    })
+  </script>
+  <script id="15" type="module">
+    Plot.plot({
+      height: 160,
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "Error"},
+      fy: {label: null},
+      color: {domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marginRight: 60,
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.ruleY([0], {stroke: "#ccc"}),
+        Plot.rectY(getErrors(GDP), {x: "date", y: "error", fy: "source", interval: "year", fill: "source"})
+      ]
+    })
+  </script>
+  <script id="22" type="text/markdown">
+    Both Claude and ChatGPT exhibited distinct but highly correlated errors that make me wonder if they were looking at some other source…
+
+    A-ha! Re-reading more carefully, it seems that after ChatGPT looked at GDP, it actually ended up using the [GDPA](https://fred.stlouisfed.org/series/GDPA) series, which omits seasonal adjustment!
+  </script>
+  <script id="39" type="module">
+    const GDPA = [
+      ...(await FileAttachment("GDPA.csv").csv({typed: true})).map(d => ({date: d.observation_date, value: d.GDPA, source: "FRED"})),
+      ...chatgpt.years.map((d, i) => ({date: new Date(Date.UTC(d, 0, 1)), value: chatgpt.us_gdp_billions[i], source: "ChatGPT"})),
+      ...claude.years.map((d, i) => ({date: new Date(Date.UTC(d, 0, 1)), value: claude.usGDP[i], source: "Claude"}))
+    ];
+    display({GDPA});
+  </script>
+  <script id="37" type="module">
+    Plot.plot({
+      title: "GDPA",
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "$ (billions)", tickFormat: ".0s"},
+      marginRight: 60,
+      color: {legend: true, domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.lineY(GDPA.filter(d => d.source === "FRED"), {x: "date", y: "value", strokeWidth: 4, strokeDasharray: "3,6", opacity: 0.3}),
+        Plot.lineY(GDPA.filter(d => d.source !== "FRED"), {x: "date", y: "value", stroke: "source"})
+      ]
+    })
+  </script>
+  <script id="38" type="module">
+    Plot.plot({
+      height: 160,
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "Error"},
+      fy: {label: null},
+      color: {domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marginRight: 60,
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.ruleY([0], {stroke: "#ccc"}),
+        Plot.rectY(getErrors(GDPA), {x: "date", y: "error", fy: "source", interval: "year", fill: "source"})
+      ]
+    })
+  </script>
+  <script id="40" type="text/markdown">
+    Now ChatGPT is spot on. Claude, in contrast, never claimed to be using GDPA, though its correlated errors above suggest it might’ve somehow been looking at it anyway. Using GDPA, its initial error is reduced, but later error increases.
+  </script>
+  <script id="35" type="text/markdown">
+    Now we can remake the ratio chart.
+  </script>
+  <script id="23" type="module" pinned="">
+    const ratio = ["FRED", "Claude", "ChatGPT"]
+      .flatMap(source => MANGSP
+        .filter(d => d.source === source)
+        .map(d => ({
+          source,
+          date: d.date,
+          value: d.value / GDPA.find(g => +g.date === +d.date && g.source === source).value
+        }))
+      );
+
+    display(ratio)
+  </script>
+  <script id="27" type="module">
+    Plot.plot({
+      title: "Ratio of Massachusetts GDP to U.S. GDP",
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {tickFormat: "%", label: null},
+      marginRight: 60,
+      color: {legend: true, domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.lineY(ratio.filter(d => d.source === "FRED"), {x: "date", y: "value", stroke: "source", strokeWidth: 4, strokeDasharray: "3,6", opacity: 0.3}),
+        Plot.lineY(ratio.filter(d => d.source !== "FRED"), {x: "date", y: "value", stroke: "source"}),
+      ]
+    })
+  </script>
+  <script id="28" type="module">
+    Plot.plot({
+      height: 160,
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {label: "Error"},
+      fy: {label: null},
+      color: {domain: ["FRED", "ChatGPT", "Claude"], range: ["black", "#0f9e7b", "#d37354"]},
+      marginRight: 60,
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.ruleY([0], {stroke: "#ccc"}),
+        Plot.rectY(getErrors(ratio), {x: "date", y: "error", fy: "source", interval: "year", fill: "source"})
+      ]
+    })
+  </script>
+  <script id="32" type="text/markdown">
+    ChatGPT’s manual transcription of both sides of the ratio appears to have been perfect. Claude’s was not; maybe it was just looking at yet another different methodology, but I think it was just wrong.
+
+    So far we’ve only looked at the correctness of the data. Given the data, did Claude and ChatGPT plot them correctly? Overlaying our versions suggests they did (which is hard to see, since the lines match so well):
+
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: center;"><a href="https://claude.ai/share/6c4602d1-3aad-4e67-9a49-72b23774acb6">Claude</a></th>
+          <th style="text-align: center;"><a href="https://chatgpt.com/share/689e7d77-f8dc-800b-8c9d-7f0b03587306">ChatGPT</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img src=${await FileAttachment("claude-overlaid.png").url()} /></td>
+          <td><img src=${await FileAttachment("chatgpt-overlaid.png").url()} /></td>
+        </tr>
+      </tbody>
+    </table>
+
+    So, the verdict is: ChatGPT was correct. Claude’s code was correct, but its “manual” transcription of the data it found introduced significant errors. (Recall that it seems to have converted millions to billions on the fly for the Massachusetts number; maybe that mental math increased errors.) Some may say this gives them confidence in ChatGPT. But for me, the divergent answers, and the amount of work it took to validate them, also confirms doubts about the quality of LLMs for data analysis.
+
+    Interestingly, although ChatGPT and Claude wrote very different code for making their charts, both solutions were effectively equivalent and correct. We have not had to discuss them here because they worked fine. I think that makes intuitive sense; there’s far more entropy in the time series than in the code; the code is far more internally verifiable from first principles.
+
+    If the LLMs were instead only supplying the data transformation and rendering code, and the data were fed in from a “lossless” and deterministic source, would you trust an LLM with this analysis? I don’t know. In this case it seems like they’d get it right.
+
+    But they seem to make methodological choices without recognizing, acknowledging, or communicating their significance. Claude left a comment as if the U.S. GDP numbers were in trillions, which was wrong. ChatGPT quietly switched from using seasonally adjusted numbers to non-adjusted numbers. Neither tried using real dollars. I actually wouldn’t expect real vs. nominal to make a difference in a ratio, but using the FRED data, it does seem to:
+  </script>
+  <script id="34" type="module">
+    const GDPC1 = (await FileAttachment("GDPC1.csv").csv({typed: true})).map(d => ({date: d.observation_date, value: d.GDPC1}))
+    const MARQGSP = (await FileAttachment("MARQGSP.csv").csv({typed: true})).map(d => ({date: d.observation_date, value: d.MARQGSP / 1000}))
+    const ratioReal = MARQGSP.map(d => ({
+      definition: "Real dollars",
+      date: d.date,
+      value: d.value / GDPC1.find(g => +g.date === +d.date).value
+    }))
+
+    const ratioSeasonallyAdjusted = MANGSP
+      .filter(d => d.source === "FRED")
+      .map(d => ({
+        definition: "Nominal, seasonally adjusted",
+        date: d.date,
+        value: d.value / GDP.find(g => +g.date === +d.date).value
+      }));
+
+    const ratioNonSeasonally = ratio.filter(d => d.source === "FRED").map(d => ({...d, definition: "Nominal, not seasonally adjusted"}));
+
+    display(Plot.plot({
+      width,
+      x: {domain: [new Date(Date.UTC(1997, 0, 1)), new Date(Date.UTC(2025,0, 1))], grid: true},
+      y: {tickFormat: "%", label: null},
+      fx: {label: null},
+      marks: [
+        Plot.frame({stroke: "#ccc"}),
+        Plot.lineY([...ratioReal, ...ratioSeasonallyAdjusted, ...ratioNonSeasonally], {x: "date", y: "value", fx: "definition"})
+      ]
+    }))
+  </script>
+  <script id="33" type="text/markdown">
+    I believe the three charts above are all “correct”; they’re all using reasonable and official FRED series. But they still differ enough that you could make divergent inferences from them. For example, was 2020 a good year for Massachusetts relative to the nation, or a bad year? (I think I would say seasonal adjustment is apt to mislead for that year, so I’ll look at the non–seasonally adjusted figures, which suggest Massachusetts handled COVID well.)
+
+    So, on the one hand, I might say we should forgive some fuzziness by the LLMs, because there’s plenty of fuzziness in the underlying territory already. But you could also say: because there are so many subtle methodological choices, it is that much more important that a solution should appreciate subtlety. The whole job is subtlety. Any analysis lives or dies by its subtleties. The devil is in the details.
+
+    And this example is easy: the U.S. and Massachusetts GDPs are both officially defined by a standard trusted national authority, FRED. The prompt referred to precise extant metrics. It was a _lookup_ problem. If you instead asked the LLM to measure Massachusetts’s contribution to the market value of the nation’s goods and services, in a world where “GDP” didn’t exist, there would be a lot more degrees of freedom, and answers would diverge much more.
+
+    I notice I have a different emotional relationship to the artifacts of the LLMs. Notice that when I download a CSV from the FRED website and import it here, I call it the “real” data; when I look at the LLM’s copies, I would not presume to call it “real”. What I call “real” is intermediated by technologies including FRED’s data collection practices, its consumer price index, its website backend, its frontend, my fiber optic connection to the Internet, HTTP, the Chrome browser, the MacOS file system, and file parsing; but those are sufficiently leakless abstractions that I can presume to use the term “real”. LLMs are not.
+
+    The other numbers aren’t real either! But does the LLM help me appreciate that, or does it mask it?
+  </script>
+</notebook>

@@ -1,0 +1,45 @@
+<!doctype html>
+<notebook theme="air">
+  <title>Claire’s hotel occupancy</title>
+  <script id="1" type="text/markdown">
+    # Claire’s hotel occupancy
+  </script>
+  <script id="6" type="module" pinned="">
+    const raw = await FileAttachment("occupancy-2025-07-05.csv").text();
+    const parse = d3.utcParse("%-m/%-d/%y");
+    const data = d3
+      .csvParseRows(raw)
+      .slice(1)
+      .filter((d) => d[1] !== "Last Year")
+      .map(([date, , rooms]) => ({ date: parse(date), rooms: +rooms }));
+
+    display(data);
+  </script>
+  <script id="12" type="module" pinned="">
+    Plot.plot({
+      width,
+      marks: [
+        Plot.ruleY([0]),
+        Plot.rectY(data, Plot.binX({y: "sum"}, {x: "date", y: "rooms", interval: "day"}))
+      ]
+    })
+  </script>
+  <script id="7" type="module" pinned="">
+    const firstYear = data.filter(d => d.date >= new Date(Date.UTC(2024,3,15)) && d.date < new Date(Date.UTC(2025,3,15)))
+  </script>
+  <script id="9" type="module" pinned="">
+    d3.median(firstYear, d => d.rooms)
+  </script>
+  <script id="8" type="module" pinned="">
+    const observedRooms = firstYear.flatMap(({date, rooms}) => d3.range(rooms).map(e => ({date, rooms})))
+  </script>
+  <script id="10" type="module" pinned="">
+    d3.median(observedRooms, d => d.rooms)
+  </script>
+  <script id="4" type="module" pinned="">
+    const observedPeople = firstYear.flatMap(({date, rooms}) => d3.range(rooms * 2).map(e => ({date, people: rooms * 2})))
+  </script>
+  <script id="11" type="module" pinned="">
+    d3.median(observedPeople, d => d.people)
+  </script>
+</notebook>

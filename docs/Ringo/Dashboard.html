@@ -1,0 +1,91 @@
+<!doctype html>
+<notebook theme="air">
+  <title>ATI dashboard</title>
+  <script id="1" type="text/markdown">
+    # ATI dashboard
+
+  </script>
+  <script id="3" type="text/markdown">
+    ## Toast
+  </script>
+  <script id="7" type="module" pinned="">
+    const orders = await FileAttachment("toastData.json").json();
+    const checks = orders.flatMap(d => d.checks)
+    const selections = checks.flatMap(d => d.selections);
+    display({orders, checks, selections})
+  </script>
+  <script id="21" type="module" pinned="">
+    function netSalesForOrder(order) {
+      if (order.voided || order.deleted) return 0;
+
+      let orderNet = 0;
+      for (const check of order.checks ?? []) {
+        if (check.voided || check.deleted) continue;
+
+        // 1) sum selections preDiscountPrice minus selection discounts (nonTaxableDiscountAmount)
+        let selNet = 0;
+        for (const s of check.selections ?? []) {
+          if (s.voided || s.displayName === "Gift Card") continue;
+          const selDisc = (s.appliedDiscounts ?? [])
+            .reduce((a, d) => a + (d.nonTaxableDiscountAmount ?? 0), 0);
+          selNet += (s.preDiscountPrice ?? 0) - selDisc;
+        }
+
+        // 2) add non-gratuity service charges
+        const svc = (check.serviceCharges ?? [])
+          .filter(sc => !sc.gratuity)
+          .reduce((a, sc) => a + (sc.chargeAmount ?? 0), 0);
+
+        // 3) subtract check-level discounts (nonTaxableDiscountAmount)
+        const checkDisc = (check.appliedDiscounts ?? [])
+          .reduce((a, d) => a + (d.nonTaxableDiscountAmount ?? 0), 0);
+
+        orderNet += selNet + svc - checkDisc;
+      }
+      return orderNet;
+    }
+  </script>
+  <script id="22" type="module" pinned="">
+    netSalesForOrder(orders[0])
+  </script>
+  <script id="23" type="module" pinned="">
+    orders[0].checks[0].amount
+  </script>
+  <script id="24" type="module" pinned="">
+    orders.filter(d => d3.sum(d.checks, d => d.amount) - netSalesForOrder(d))
+  </script>
+  <script id="25" type="module" pinned="">
+    orders.map(d => ({
+      amount1: d3.sum(d.checks, d => d.voided || d.deleted ? 0 : d.amount),
+      amount2: netSalesForOrder(d), order: d
+    })).filter(d => d.amount1 < d.amount2)
+  </script>
+  <script id="13" type="module" pinned="">
+    const selections2 = selections.map(d => ({name: d.displayName, price: d.price, quantity: d.quantity, time: d3.isoParse(d.createdDate)}));
+    display(selections2)
+  </script>
+  <script id="15" type="module" pinned="">
+    Plot.plot({
+      width,
+      marginLeft: 200,
+      marks: [
+        Plot.dot(selections2, {x: "time", y: "name"})
+      ]
+    })
+  </script>
+  <script id="16" type="module" pinned="">
+    new Set(selections.map(d => d.salesCategory.guid))
+  </script>
+  <script id="18" type="module" pinned="">
+    Plot.plot({
+      x: {type: "time"},
+      width,
+      marks: [
+        Plot.rectY(selections2, Plot.binX({y: "count"}, {x: "time", interval: "hour"}))
+      ]
+    })
+  </script>
+  <script id="20" type="module" pinned="">
+    orders
+  </script>
+</notebook>

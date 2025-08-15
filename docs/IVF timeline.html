@@ -1,0 +1,73 @@
+<!doctype html>
+<notebook theme="air">
+  <title>IVF timeline</title>
+  <script id="1" type="text/markdown">
+    # IVF timeline
+  </script>
+  <script id="6" type="module" pinned="">
+    const milestones = d3.csvParse(`milestone,expected,actual,epoch,repeatUntil
+    Ovulation,,2025-05-30
+    Period,13,2025-06-11
+    Baseline tests,2,2025-06-13
+    Injections start,1,
+    First check-up,4,
+    Check-up,2,
+    Check-up,2,
+    Check-up,2,
+    Trigger,15,,Period
+    Retrieval,2,,
+    `, d3.autoType);
+    display(milestones);
+
+    const baseDays = d3.utcDay.range(milestones[0].actual, d3.utcDay.offset(milestones[0].actual, 42))
+
+    let day;
+    const milestoneDays = [];
+    for (const m of milestones) {
+      if (!day) {
+        day = m.actual;
+      } else {
+        const epoch = m.epoch ? milestoneDays.find(d => d.milestone === m.epoch).day : day;
+        day = m.actual || d3.utcDay.offset(epoch, m.expected);
+      }
+      milestoneDays.push({day, milestone: m.milestone, estimated: !m.actual});
+    }
+
+    const cycleStart = milestoneDays.find(d => d.milestone === "Period").day;
+    const cycleDays = d3.utcDay.range(cycleStart, d3.utcDay.offset(cycleStart, 30)).map((date, i) => ({date, i: i+1}));
+
+    const getWeek = d => d3.utcSunday.floor(d)
+  </script>
+  <script id="7" type="module" pinned="">
+    Plot.plot({
+      width,
+      x: {axis: "top", tickFormat: Plot.formatWeekday("en-US", "short")},
+      y: {type: "band", axis: false},
+      aspectRatio: 1,
+      marks: [
+        Plot.rect(baseDays, {...dateXY(), stroke: d => +d === +d3.utcDay(new Date()) ? "black" : "#ccc"}),
+        Plot.text(baseDays, {...dateXY(), dy: -40, text: dateFormat, fill: d => d.getUTCDate() === 1 ? "black" : "gray"}),
+        Plot.text(cycleDays, {...dateXY(d => d.date), text: d => "C" + d.i, dy: -12}),
+        Plot.text(milestoneDays, {...dateXY(d => d.day), text: d => d.milestone + (d.estimated ? "?" : ""), fill: d => d.estimated ? "gray" : "black"})
+      ]
+    })
+  </script>
+  <script id="11" type="module" pinned="">
+    const dateXY = (accessor = d => d) => ({x: d => accessor(d).getUTCDay(), y: d => getWeek(accessor(d))})
+  </script>
+  <script id="10" type="module" pinned="">
+    const dateFormat = d => (d.getUTCDate() === 1 ? d3.utcFormat("%B %d") : d3.utcFormat("%d"))(d)
+  </script>
+  <script id="13" type="module" pinned="">
+    d3.utcDay.count(new Date(Date.UTC(2025,3,17)), new Date(Date.UTC(2025,4,4))) + 1
+  </script>
+  <script id="14" type="module" pinned="">
+    new Date(Date.UTC(2025,3,17))
+  </script>
+  <script id="15" type="module" pinned="">
+    new Date(Date.UTC(2025,4,4))
+  </script>
+  <script id="17" type="module" pinned="">
+    d3.timeDay.offset(d3.timeDay(), -1)
+  </script>
+</notebook>
